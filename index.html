@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>অরবিট ইন্টারন্যাশনাল স্কুল - ম্যানেজমেন্ট সিস্টেম</title>
+    <!-- ফন্ট অসম আইকন -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0f172a;
+            color: #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: white;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            border-bottom: 1px solid #334155;
+            animation: fadeInDown 0.8s ease-in-out;
+        }
+
+        header h1 {
+            font-size: 26px;
+            margin-bottom: 5px;
+            color: #38bdf8;
+        }
+
+        header p {
+            font-size: 14px;
+            color: #94a3b8;
+        }
+
+        .container {
+            flex: 1;
+            max-width: 1000px;
+            margin: 30px auto;
+            width: 90%;
+        }
+
+        .page-section {
+            display: none;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .page-section.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .login-card {
+            background: #1e293b;
+            max-width: 400px;
+            margin: 40px auto;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border-top: 5px solid #0ea5e9;
+            border: 1px solid #334155;
+            animation: zoomIn 0.5s ease;
+        }
+
+        .login-card h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #f8fafc;
+            font-size: 22px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #cbd5e1;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            background-color: #0f172a;
+            border: 1px solid #475569;
+            color: #f8fafc;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 8px rgba(56, 189, 248, 0.3);
+            outline: none;
+        }
+
+        .login-btn {
+            width: 100%;
+            background-color: #0ea5e9;
+            color: white;
+            border: none;
+            padding: 11px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.1s;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        .login-btn:hover {
+            background-color: #0284c7;
+        }
+
+        .login-btn:active {
+            transform: scale(0.98);
+        }
+
+        .error-msg {
+            color: #f43f5e;
+            font-size: 13px;
+            text-align: center;
+            margin-top: 10px;
+            display: none;
+            animation: shake 0.4s ease;
+        }
+
+        .developer-badge {
+            max-width: 400px;
+            margin: 30px auto 10px auto;
+            background: #1e293b;
+            border: 1px solid #334155;
+            padding: 15px 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .developer-badge p {
+            font-size: 14px;
+            color: #94a3b8;
+        }
+
+        .developer-badge h3 {
+            font-size: 16px;
+            color: #38bdf8;
+            font-weight: 600;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 5px;
+        }
+
+        .social-icons a {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            color: white;
+            font-size: 16px;
+            text-decoration: none;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        .social-icons a.facebook {
+            background-color: #1877f2;
+        }
+
+        .social-icons a.whatsapp {
+            background-color: #25d366;
+        }
+
+        .social-icons a:hover {
+            transform: translateY(-3px);
+            opacity: 0.9;
+        }
+
+        h2.section-title {
+            margin-bottom: 20px;
+            color: #f8fafc;
+            border-bottom: 2px solid #334155;
+            padding-bottom: 8px;
+        }
+
+        .class-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .class-card {
+            background: #1e293b;
+            padding: 25px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border-top: 4px solid #0ea5e9;
+            border: 1px solid #334155;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .class-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.5);
+            background: #273548;
+            border-color: #38bdf8;
+        }
+
+        .class-card i {
+            font-size: 40px;
+            color: #38bdf8;
+            margin-bottom: 10px;
+            transition: transform 0.3s;
+        }
+
+        .class-card:hover i {
+            transform: scale(1.1);
+        }
+
+        .class-card h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
+            color: #f8fafc;
+        }
+
+        .class-card p {
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .top-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn-custom {
+            background-color: #334155;
+            color: #f8fafc;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .btn-custom:hover {
+            background-color: #475569;
+        }
+        .btn-custom:active {
+            transform: scale(0.96);
+        }
+
+        .history-btn {
+            background-color: #0284c7;
+        }
+        .history-btn:hover {
+            background-color: #0369a1;
+        }
+
+        .logout-btn {
+            background-color: #e11d48;
+        }
+        .logout-btn:hover {
+            background-color: #be123c;
+        }
+
+        .add-student-box {
+            background: #1e293b;
+            padding: 18px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: 1px solid #334155;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .add-student-box .input-field-group {
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .add-student-box label {
+            font-size: 12px;
+            font-weight: bold;
+            color: #cbd5e1;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .add-student-box input {
+            width: 100%;
+            padding: 8px;
+            background-color: #0f172a;
+            border: 1px solid #475569;
+            color: #f8fafc;
+            border-radius: 6px;
+            font-size: 13px;
+            transition: border-color 0.3s;
+        }
+
+        .add-student-box input:focus {
+            border-color: #14b8a6;
+            outline: none;
+        }
+
+        .add-btn {
+            background-color: #14b8a6;
+            color: white;
+            border: none;
+            padding: 9px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            height: 37px;
+            font-weight: 600;
+            transition: background 0.3s, transform 0.1s;
+        }
+        .add-btn:hover {
+            background-color: #0d9488;
+        }
+        .add-btn:active {
+            transform: scale(0.96);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            background: #1e293b;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: 1px solid #334155;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #334155;
+            vertical-align: middle;
+            color: #e2e8f0;
+        }
+
+        th {
+            background-color: #0f172a;
+            color: #38bdf8;
+            border-bottom: 2px solid #475569;
+        }
+
+        tr {
+            transition: background-color 0.2s;
+            animation: fadeIn 0.4s ease;
+        }
+
+        tr:hover {
+            background-color: #273548;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 6px;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .msg-btn, .edit-btn, .del-btn {
+            border: none;
+            padding: 7px 11px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+
+        .msg-btn { background-color: #25d366; color: white; } 
+        .edit-btn { background-color: #6366f1; color: white; }
+        .del-btn { background-color: #475569; color: white; }
+
+        .msg-btn:hover, .edit-btn:hover, .del-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+        .msg-btn:active, .edit-btn:active, .del-btn:active { transform: scale(0.95); }
+
+        .custom-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .custom-modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .custom-modal {
+            background: #1e293b;
+            border: 1px solid #334155;
+            width: 90%;
+            max-width: 420px;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+            transform: scale(0.8);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .custom-modal.history-modal-box {
+            max-width: 680px;
+        }
+
+        .custom-modal-overlay.active .custom-modal {
+            transform: scale(1);
+        }
+
+        .custom-modal h3 {
+            margin-bottom: 15px;
+            color: #f8fafc;
+            font-size: 20px;
+            border-bottom: 2px solid #25d366;
+            padding-bottom: 8px;
+        }
+
+        .custom-modal.delete-modal h3 {
+            border-bottom-color: #f43f5e;
+            color: #f43f5e;
+        }
+
+        .custom-modal.history-modal-box h3 {
+            border-bottom-color: #0284c7;
+            color: #38bdf8;
+        }
+
+        .modal-form-group {
+            margin-bottom: 12px;
+        }
+
+        .modal-form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            color: #cbd5e1;
+            margin-bottom: 4px;
+        }
+
+        .modal-form-group input, .modal-form-group textarea {
+            width: 100%;
+            padding: 9px;
+            background-color: #0f172a;
+            border: 1px solid #475569;
+            color: #f8fafc;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .modal-form-group input:focus, .modal-form-group textarea:focus {
+            border-color: #25d366;
+            outline: none;
+            box-shadow: 0 0 5px rgba(37, 211, 102, 0.3);
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .modal-btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .modal-btn-cancel {
+            background-color: #475569;
+            color: white;
+        }
+        .modal-btn-cancel:hover { background-color: #334155; }
+
+        .modal-btn-save {
+            background-color: #6366f1;
+            color: white;
+        }
+        .modal-btn-save:hover { background-color: #4f46e5; }
+
+        .modal-btn-send {
+            background-color: #25d366;
+            color: white;
+        }
+        .modal-btn-send:hover { background-color: #20ba5a; }
+
+        .modal-btn-delete {
+            background-color: #f43f5e;
+            color: white;
+        }
+        .modal-btn-delete:hover { background-color: #e11d48; }
+
+        .history-container {
+            max-height: 340px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-right: 5px;
+        }
+
+        .history-card {
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 12px 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            transition: border-color 0.2s;
+        }
+
+        .history-card:hover {
+            border-color: #38bdf8;
+        }
+
+        .history-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            flex-wrap: wrap;
+            gap: 5px;
+            border-bottom: 1px solid #1e293b;
+            padding-bottom: 6px;
+        }
+
+        .history-student-name {
+            color: #38bdf8;
+            font-weight: 600;
+        }
+
+        .history-time {
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        .history-numbers-row {
+            display: flex;
+            gap: 15px;
+            font-size: 13px;
+            flex-wrap: wrap;
+            background: #1e293b;
+            padding: 6px 10px;
+            border-radius: 5px;
+        }
+
+        .sender-num {
+            color: #38bdf8;
+            font-family: monospace;
+        }
+
+        .receiver-num {
+            color: #25d366;
+            font-family: monospace;
+        }
+
+        .history-msg-body {
+            color: #cbd5e1;
+            font-size: 13px;
+            line-height: 1.4;
+            background: #1e293b;
+            padding: 8px 10px;
+            border-radius: 6px;
+        }
+
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #334155;
+            color: #f8fafc;
+            border: 1px solid #475569;
+            text-align: center;
+            border-radius: 6px;
+            padding: 12px;
+            position: fixed;
+            z-index: 3000;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-size: 14px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        #toast.show {
+            visibility: visible;
+            animation: fadeinOut 2.5s ease;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+
+        @keyframes fadeinOut {
+            0% { bottom: 0; opacity: 0; }
+            20% { bottom: 30px; opacity: 1; }
+            80% { bottom: 30px; opacity: 1; }
+            100% { bottom: 0; opacity: 0; }
+        }
+
+        footer {
+            background-color: #1e293b;
+            border-top: 1px solid #334155;
+            color: #94a3b8;
+            text-align: center;
+            padding: 15px;
+            font-size: 13px;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1><i class="fa-solid fa-graduation-cap"></i> অরবিট ইন্টারন্যাশনাল স্কুল</h1>
+        <p>অনলাইন উপস্থিতি ও স্টুডেন্ট ম্যানেজমেন্ট সিস্টেম</p>
+    </header>
+
+    <div class="container">
+        
+        <!-- ১. লগইন সেকশন -->
+        <section id="login-section" class="page-section active">
+            <div class="login-card">
+                <h2>শিক্ষক লগইন</h2>
+                <div class="form-group">
+                    <label for="logUser">ইউজারনেম (Username)</label>
+                    <input type="text" id="logUser" placeholder="আপনার নাম">
+                </div>
+                <div class="form-group">
+                    <label for="logPass">পাসওয়ার্ড (Password)</label>
+                    <input type="password" id="logPass" placeholder="পাসওয়ার্ড লিখুন">
+                </div>
+                <button class="login-btn" id="loginBtn">লগইন করুন</button>
+                <div id="errorMsg" class="error-msg">সঠিক ইউজারনেম এবং পাসওয়ার্ড দিন!</div>
+            </div>
+        </section>
+
+        <!-- ২. ক্লাসের তালিকা সেকশন -->
+        <section id="class-section" class="page-section">
+            <div class="top-bar">
+                <h2 class="section-title" style="margin:0; border:none;">ক্লাস নির্বাচন করুন (প্লে - ১০ম শ্রেণি)</h2>
+                <div class="top-buttons">
+                    <button class="btn-custom history-btn" id="openHistoryBtn"><i class="fa-solid fa-clock-rotate-left"></i> হিস্ট্রি</button>
+                    <button class="btn-custom logout-btn" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> লগআউট</button>
+                </div>
+            </div>
+            <hr style="margin-bottom: 20px; border: 0; border-top: 1px solid #334155;">
+            
+            <div class="class-grid">
+                <div class="class-card" data-class="প্লে শ্রেণি">
+                    <i class="fa-solid fa-child"></i>
+                    <h3>প্লে শ্রেণি</h3>
+                    <p>শিক্ষার্থী তালিকা</p>
+                </div>
+                <div class="class-card" data-class="নার্সারি শ্রেণি">
+                    <i class="fa-solid fa-child-reaching"></i>
+                    <h3>নার্সারি শ্রেণি</h3>
+                    <p>শিক্ষার্থী তালিকা</p>
+                </div>
+                <div class="class-card" data-class="কেজি শ্রেণি">
+                    <i class="fa-solid fa-shapes"></i>
+                    <h3>কেজি শ্রেণি</h3>
+                    <p>শিক্ষার্থী তালিকা</p>
+                </div>
+                <div class="class-card" data-class="প্রথম শ্রেণি">
+                    <i class="fa-solid fa-book-open"></i>
+                    <h3>প্রথম শ্রেণি</h3>
+                    <p>শিক্ষার্থী তালিকা</p>
+                </div>
+                <div class="class-card" data-class="দ্বিতীয় শ্রেণি">
+                    <i class="fa-solid fa-book-open"></i>
+                    <h3>দ্বিতীয় শ্রেণি</h3>
+                    <p>শিক্ষার্থী তালিকা</p>
+                </div>
+                <div class="class-card" data-class="তৃতীয় শ্রেণি">
+                    <i class="fa-solid fa-book-open"></i>
+                    <h3>তৃতীয় শ্রেণি</h3>
+                    <p>শিক্ষার্থী তালিকা</p>
+                </div>
+                <div class="class-card" data-class="চতুর্থ শ্রেণি">
+                    <i class="fa-solid fa-book-open"></i>
+                    <h3>চতুর্থ শ্রেণি</h3>
+                    <p>শিক্ষার্থী তালিকা</p>
+                </div>
+                <div class="class-card" data-class="পঞ্চম শ্রেণি">
+                    <i class="fa-solid fa-book-open"></i>
+                    <h3>পঞ্চম শ্রেণি</h3>
+                    <p>শিক্ষার্থী তালিকা</p>
+                </div>
+                <div class="class-card" data-class="ষষ্ঠ শ্রেণি">
+                    <i class="fa-solid fa-book-open"></i>
+                    <h3>ষষ্ঠ শ্রেণি</h3>
+                    <p>শিক্ষার্থী তালিকা</p>
+                </div>
+                <div class="class-card" data-class="সপ্তম শ্রেণি">
+                    <i class="fa-solid fa-book-open"></i>
+                    <h3>সপ্তম শ্রেণি</h3>
+                    <p>শিক্ষার্থী তালিকা</p>
+                </div>
+                <div class="class-card" data-class="অষ্টম শ্রেণি">
+                    <i class="fa-solid fa-book-open"></i>
+                    <h3>অষ্টম শ্রেণি</h3>
+                    <p>শিক্ষার্থী তালিকা</p>
+                </div>
+                <div class="class-card" data-class="নবম শ্রেণি">
+                    <i class="fa-solid fa-book-open"></i>
+                    <h3>নবম শ্রেণি</h3>
+                    <p>শিক্ষার্থী তালিকা</p>
+                </div>
+                <div class="class-card" data-class="দশম শ্রেণি">
+                    <i class="fa-solid fa-book-open"></i>
+                    <h3>দশম শ্রেণি</h3>
+                    <p>শিক্ষার্থী তালিকা</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ৩. স্টুডেন্ট ইনফরমেশন ও এসএমএস সেকশন -->
+        <section id="student-section" class="page-section">
+            <div class="top-bar">
+                <button class="btn-custom" id="backBtn"><i class="fa-solid fa-arrow-left"></i> ক্লাসে ফিরে যান</button>
+                <div class="top-buttons">
+                    <button class="btn-custom history-btn" id="openHistoryBtn2"><i class="fa-solid fa-clock-rotate-left"></i> হিস্ট্রি</button>
+                    <button class="btn-custom logout-btn" id="logoutBtn2"><i class="fa-solid fa-right-from-bracket"></i> লগআউট</button>
+                </div>
+            </div>
+            <h2 id="class-title" class="section-title">শিক্ষার্থীদের তালিকা</h2>
+            
+            <div class="add-student-box">
+                <div class="input-field-group">
+                    <label>রোল</label>
+                    <input type="number" id="newRoll" placeholder="রোল">
+                </div>
+                <div class="input-field-group">
+                    <label>শিক্ষার্থীর নাম</label>
+                    <input type="text" id="newName" placeholder="নাম">
+                </div>
+                <div class="input-field-group">
+                    <label>অভিভাবক</label>
+                    <input type="text" id="newGuardian" placeholder="অভিভাবকের নাম">
+                </div>
+                <div class="input-field-group">
+                    <label>মোবাইল নম্বর</label>
+                    <input type="text" id="newPhone" placeholder="017xxxxxxxx">
+                </div>
+                <button class="add-btn" id="addStudentBtn"><i class="fa-solid fa-user-plus"></i> তালিকাভুক্ত করুন</button>
+            </div>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>রোল</th>
+                            <th>শিক্ষার্থীর নাম</th>
+                            <th>অভিভাবক</th>
+                            <th>মোবাইল নম্বর</th>
+                            <th>অ্যাকশন</th>
+                        </tr>
+                    </thead>
+                    <tbody id="student-list">
+                        <tr><td colspan="5" style="text-align:center; color:#94a3b8;">লোড হচ্ছে...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- মডালসমূহ -->
+    <div id="editModalOverlay" class="custom-modal-overlay">
+        <div class="custom-modal">
+            <h3><i class="fa-solid fa-pen-to-square"></i> শিক্ষার্থীর তথ্য এডিট করুন</h3>
+            <input type="hidden" id="editDocId">
+            <div class="modal-form-group">
+                <label>রোল</label>
+                <input type="number" id="editRoll">
+            </div>
+            <div class="modal-form-group">
+                <label>শিক্ষার্থীর নাম</label>
+                <input type="text" id="editName">
+            </div>
+            <div class="modal-form-group">
+                <label>অভিভাবকের নাম</label>
+                <input type="text" id="editGuardian">
+            </div>
+            <div class="modal-form-group">
+                <label>মোবাইল নম্বর</label>
+                <input type="text" id="editPhone">
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-cancel" id="closeEditBtn">বাতিল</button>
+                <button class="modal-btn modal-btn-save" id="saveEditBtn">সংরক্ষণ করুন</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="smsModalOverlay" class="custom-modal-overlay">
+        <div class="custom-modal">
+            <h3><i class="fa-brands fa-whatsapp"></i> হোয়াটসঅ্যাপ মেসেজ প্রিভিউ</h3>
+            <input type="hidden" id="smsStudentName">
+            <div class="modal-form-group">
+                <label>লগইন করা ইউজারনেম</label>
+                <input type="text" id="senderUser" readonly style="background-color: #111827; color: #38bdf8; cursor: not-allowed;">
+            </div>
+            <div class="modal-form-group">
+                <label>অভিভাবকের হোয়াটসঅ্যাপ নম্বর</label>
+                <input type="text" id="smsPhone">
+            </div>
+            <div class="modal-form-group">
+                <label>প্রেরিতব্য মেসেজ টেক্সট</label>
+                <textarea id="smsText" rows="4" style="resize: none;"></textarea>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-cancel" id="closeSmsBtn">বাতিল</button>
+                <button class="modal-btn modal-btn-send" id="sendSmsBtn"><i class="fa-brands fa-whatsapp"></i> হোয়াটসঅ্যাপে পাঠান</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="historyModalOverlay" class="custom-modal-overlay">
+        <div class="custom-modal history-modal-box">
+            <h3><i class="fa-solid fa-clock-rotate-left"></i> সাম্প্রতিক এসএমএস ইতিহাস (শেষ ২০টি)</h3>
+            <p style="font-size: 12px; color: #94a3b8; margin-bottom: 12px;">নিরাপত্তার খাতিরে এই ইতিহাস কেউ ডিলিট করতে পারবে না।</p>
+            
+            <div id="sms-history-list" class="history-container">
+                <p style="text-align:center; color:#94a3b8; padding: 20px;">লোড হচ্ছে...</p>
+            </div>
+
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-cancel" id="closeHistoryBtn">বন্ধ করুন</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="deleteModalOverlay" class="custom-modal-overlay">
+        <div class="custom-modal delete-modal">
+            <h3><i class="fa-solid fa-triangle-exclamation"></i> শিক্ষার্থী ডিলিট নিশ্চিত করুন</h3>
+            <input type="hidden" id="deleteDocId">
+            <p id="deleteMsgText" style="font-size: 14px; color: #cbd5e1; margin-bottom: 20px; line-height: 1.5;"></p>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-cancel" id="closeDeleteBtn">বাতিল</button>
+                <button class="modal-btn modal-btn-delete" id="confirmDeleteBtn"><i class="fa-solid fa-trash"></i> হ্যাঁ, ডিলিট করুন</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast">সফল বার্তা</div>
+
+    <div class="developer-badge">
+        <p>Developed by</p>
+        <h3>Md. Ashraful Islam</h3>
+        <div class="social-icons">
+            <a href="https://www.facebook.com/md.ashraful.islam.412954" target="_blank" class="facebook" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="https://wa.me/8801796646395" target="_blank" class="whatsapp" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; ২০২৬ অরবিট ইন্টারন্যাশনাল স্কুল | সর্বস্বত্ব সংরক্ষিত</p>
+    </footer>
+
+    <!-- ফায়ারবেস ও মূল লজিক স্ক্রিপ্ট -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-analytics.js";
+        import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyD-Xa3h2iZ-h5mr1edKwAG1HHmrm22FP4k",
+            authDomain: "orbit-school.firebaseapp.com",
+            projectId: "orbit-school",
+            storageBucket: "orbit-school.firebasestorage.app",
+            messagingSenderId: "1093045025216",
+            appId: "1:1093045025216:web:4cc6ec9d7d45a124b17025",
+            measurementId: "G-K222NLS1FL"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+
+        let currentActiveClass = "";
+        let currentClassStudents = [];
+        let loggedInUsername = localStorage.getItem('orbit_logged_user') || "";
+        const VALID_PASS = "@orbitschool";
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (loggedInUsername) {
+                switchSection('class-section', 'login-section');
+            }
+        });
+
+        function switchSection(showId, hideId) {
+            let hideElem = document.getElementById(hideId);
+            let showElem = document.getElementById(showId);
+            
+            hideElem.style.opacity = '0';
+            hideElem.style.transform = 'translateY(-15px)';
+            
+            setTimeout(() => {
+                hideElem.classList.remove('active');
+                showElem.classList.add('active');
+                showElem.style.opacity = '0';
+                showElem.style.transform = 'translateY(15px)';
+                
+                setTimeout(() => {
+                    showElem.style.opacity = '1';
+                    showElem.style.transform = 'translateY(0)';
+                }, 50);
+            }, 300);
+        }
+
+        function showToast(msg) {
+            let toast = document.getElementById("toast");
+            toast.innerText = msg;
+            toast.className = "show";
+            setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 2500);
+        }
+
+        function handleLogin() {
+            const inputUser = document.getElementById('logUser').value.trim(); 
+            const inputPass = document.getElementById('logPass').value.trim();
+            const errorMsg = document.getElementById('errorMsg');
+
+            if (inputUser !== "" && inputPass === VALID_PASS) {
+                loggedInUsername = inputUser;
+                localStorage.setItem('orbit_logged_user', loggedInUsername);
+
+                errorMsg.style.display = 'none';
+                switchSection('class-section', 'login-section');
+                document.getElementById('logPass').value = '';
+                showToast("সফলভাবে লগইন করা হয়েছে!");
+            } else {
+                errorMsg.style.display = 'block';
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('orbit_logged_user');
+            loggedInUsername = "";
+
+            document.getElementById('student-section').classList.remove('active');
+            document.getElementById('class-section').classList.remove('active');
+            let loginSec = document.getElementById('login-section');
+            loginSec.classList.add('active');
+            loginSec.style.opacity = '1';
+            loginSec.style.transform = 'translateY(0)';
+            showToast("লগআউট করা হয়েছে!");
+        }
+
+        async function showStudents(className) {
+            currentActiveClass = className;
+            document.getElementById('class-title').innerText = className + ' - শিক্ষার্থীদের তালিকা';
+            switchSection('student-section', 'class-section');
+            await fetchStudentsFromFirestore();
+        }
+
+        async function fetchStudentsFromFirestore() {
+            const tbody = document.getElementById('student-list');
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#94a3b8;">ডাটা লোড হচ্ছে...</td></tr>`;
+            
+            try {
+                const querySnapshot = await getDocs(collection(db, currentActiveClass));
+                currentClassStudents = [];
+                querySnapshot.forEach((docSnap) => {
+                    currentClassStudents.push({ id: docSnap.id, ...docSnap.data() });
+                });
+                currentClassStudents.sort((a, b) => Number(a.roll) - Number(b.roll));
+                renderTable();
+            } catch (error) {
+                console.error("Error fetching: ", error);
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#f43f5e;">ডাটা লোড করতে সমস্যা হয়েছে!</td></tr>`;
+            }
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('student-list');
+            tbody.innerHTML = '';
+            
+            if(currentClassStudents.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#94a3b8;">এই শ্রেণিতে কোনো শিক্ষার্থী নেই। উপরে ফরম থেকে যুক্ত করুন।</td></tr>`;
+                return;
+            }
+
+            currentClassStudents.forEach((student) => {
+                let row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${student.roll}</td>
+                    <td>${student.name}</td>
+                    <td>${student.guardian}</td>
+                    <td>${student.phone}</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="msg-btn" data-name="${student.name}" data-phone="${student.phone}"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
+                            <button class="edit-btn" data-id="${student.id}"><i class="fa-solid fa-pen-to-square"></i> এডিট</button>
+                            <button class="del-btn" data-id="${student.id}" data-name="${student.name}" data-roll="${student.roll}"><i class="fa-solid fa-trash"></i> ডিলিট</button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            document.querySelectorAll('.msg-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    let b = e.currentTarget;
+                    openSMSModal(b.getAttribute('data-name'), b.getAttribute('data-phone'));
+                });
+            });
+
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    openEditModal(e.currentTarget.getAttribute('data-id'));
+                });
+            });
+
+            document.querySelectorAll('.del-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    let b = e.currentTarget;
+                    openDeleteModal(b.getAttribute('data-id'), b.getAttribute('data-name'), b.getAttribute('data-roll'));
+                });
+            });
+        }
+
+        async function addStudent() {
+            const roll = document.getElementById('newRoll').value.trim();
+            const name = document.getElementById('newName').value.trim();
+            const guardian = document.getElementById('newGuardian').value.trim();
+            const phone = document.getElementById('newPhone').value.trim();
+
+            if(!roll || !name || !phone) {
+                alert("দয়া করে রোল, নাম এবং মোবাইল নম্বর অন্তত পূরণ করুন!");
+                return;
+            }
+
+            try {
+                await addDoc(collection(db, currentActiveClass), {
+                    roll: Number(roll),
+                    name: name,
+                    guardian: guardian || 'প্রযোজ্য নয়',
+                    phone: phone
+                });
+
+                document.getElementById('newRoll').value = '';
+                document.getElementById('newName').value = '';
+                document.getElementById('newGuardian').value = '';
+                document.getElementById('newPhone').value = '';
+
+                showToast("শিক্ষার্থী সফলভাবে যুক্ত করা হয়েছে!");
+                await fetchStudentsFromFirestore();
+            } catch (error) {
+                console.error("Error adding: ", error);
+                alert("সংরক্ষণ করতে সমস্যা হয়েছে!");
+            }
+        }
+
+        function openEditModal(id) {
+            let student = currentClassStudents.find(s => s.id === id);
+            if(!student) return;
+            
+            document.getElementById('editDocId').value = student.id;
+            document.getElementById('editRoll').value = student.roll;
+            document.getElementById('editName').value = student.name;
+            document.getElementById('editGuardian').value = student.guardian;
+            document.getElementById('editPhone').value = student.phone;
+
+            document.getElementById('editModalOverlay').classList.add('active');
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModalOverlay').classList.remove('active');
+        }
+
+        async function saveEditedStudent() {
+            let id = document.getElementById('editDocId').value;
+            let newRoll = document.getElementById('editRoll').value.trim();
+            let newName = document.getElementById('editName').value.trim();
+            let newGuardian = document.getElementById('editGuardian').value.trim();
+            let newPhone = document.getElementById('editPhone').value.trim();
+
+            if (newRoll === "" || newName === "" || newPhone === "") {
+                alert("রোল, নাম এবং মোবাইল নম্বর খালি রাখা যাবে না!");
+                return;
+            }
+
+            try {
+                const studentRef = doc(db, currentActiveClass, id);
+                await updateDoc(studentRef, {
+                    roll: Number(newRoll),
+                    name: newName,
+                    guardian: newGuardian || 'প্রযোজ্য নয়',
+                    phone: newPhone
+                });
+
+                closeEditModal();
+                showToast("তথ্য সফলভাবে আপডেট করা হয়েছে!");
+                await fetchStudentsFromFirestore();
+            } catch (error) {
+                console.error("Error updating: ", error);
+                alert("আপডেট করতে সমস্যা হয়েছে!");
+            }
+        }
+
+        function openDeleteModal(id, name, roll) {
+            document.getElementById('deleteDocId').value = id;
+            document.getElementById('deleteMsgText').innerHTML = `আপনি কি নিশ্চিতভাবে <b>${name}</b> (রোল: ${roll}) শিক্ষার্থীকে তালিকা থেকে ডিলিট করতে চান?`;
+            document.getElementById('deleteModalOverlay').classList.add('active');
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModalOverlay').classList.remove('active');
+        }
+
+        async function confirmDeleteStudent() {
+            let id = document.getElementById('deleteDocId').value;
+            try {
+                await deleteDoc(doc(db, currentActiveClass, id));
+                closeDeleteModal();
+                showToast("শিক্ষার্থী সফলভাবে মুছে ফেলা হয়েছে!");
+                await fetchStudentsFromFirestore();
+            } catch (error) {
+                console.error("Error deleting: ", error);
+                alert("মুছে ফেলতে সমস্যা হয়েছে!");
+            }
+        }
+
+        function goBack() {
+            switchSection('class-section', 'student-section');
+        }
+
+        function openSMSModal(studentName, phoneNum) {
+            let message = `প্রিয় অভিভাবক, আজ বিদ্যালয় চলাকালীন আপনার সন্তান ${studentName} ক্লাসে উপস্থিত ছিল না। বিষয়টি সদয় অবগতির জন্য জানানো হলো। (অরবিট ইন্টারন্যাশনাল স্কুল)`;
+
+            document.getElementById('smsStudentName').value = studentName;
+            document.getElementById('senderUser').value = loggedInUsername; 
+            document.getElementById('smsPhone').value = phoneNum;
+            document.getElementById('smsText').value = message;
+
+            document.getElementById('smsModalOverlay').classList.add('active');
+        }
+
+        function closeSmsModal() {
+            document.getElementById('smsModalOverlay').classList.remove('active');
+        }
+
+        async function confirmSendSMS() {
+            let studentName = document.getElementById('smsStudentName').value.trim();
+            let senderUser = document.getElementById('senderUser').value.trim();
+            let userPhone = document.getElementById('smsPhone').value.trim();
+            let message = document.getElementById('smsText').value.trim();
+
+            if(!userPhone || !message || !senderUser) {
+                alert("ইউজারনেম, প্রাপক নম্বর এবং মেসেজ কোনোটিই খালি রাখা যাবে না!");
+                return;
+            }
+
+            let now = new Date();
+            let timeString = now.toLocaleDateString('bn-BD') + ' ' + now.toLocaleTimeString('bn-BD', {hour: '2-digit', minute:'2-digit'});
+
+            let historyEntry = {
+                time: timeString,
+                student: studentName,
+                sender: senderUser,
+                phone: userPhone,
+                msg: message,
+                timestamp: Date.now()
+            };
+
+            try {
+                await addDoc(collection(db, "sms_history"), historyEntry);
+            } catch (error) {
+                console.error("Error saving history: ", error);
+            }
+
+            let formattedPhone = userPhone;
+            if (formattedPhone.startsWith('0')) {
+                formattedPhone = '88' + formattedPhone;
+            } else if (!formattedPhone.startsWith('+')) {
+                formattedPhone = '880' + formattedPhone;
+            }
+            formattedPhone = formattedPhone.replace(/[^0-9]/g, '');
+
+            let whatsappUrl = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+
+            closeSmsModal();
+            showToast("হোয়াটসঅ্যাপ চ্যাট ওপেন করা হচ্ছে ও হিস্ট্রি সংরক্ষিত হয়েছে...");
+        }
+
+        async function openHistoryModal() {
+            const container = document.getElementById('sms-history-list');
+            container.innerHTML = `<p style="text-align:center; color:#94a3b8; padding: 20px;">হিস্ট্রি লোড হচ্ছে...</p>`;
+            document.getElementById('historyModalOverlay').classList.add('active');
+
+            try {
+                const q = query(collection(db, "sms_history"), orderBy("timestamp", "desc"), limit(20));
+                const querySnapshot = await getDocs(q);
+                
+                container.innerHTML = '';
+                let smsHistory = [];
+                querySnapshot.forEach((doc) => {
+                    smsHistory.push(doc.data());
+                });
+
+                if (smsHistory.length === 0) {
+                    container.innerHTML = `<p style="text-align:center; color:#94a3b8; padding: 20px;">এখনো কোনো এসএমএস পাঠানোর ইতিহাস নেই।</p>`;
+                } else {
+                    smsHistory.forEach(item => {
+                        let card = document.createElement('div');
+                        card.className = 'history-card';
+                        card.innerHTML = `
+                            <div class="history-card-header">
+                                <span class="history-student-name"><i class="fa-solid fa-user-graduate"></i> ${item.student}</span>
+                                <span class="history-time"><i class="fa-regular fa-clock"></i> ${item.time}</span>
+                            </div>
+                            <div class="history-numbers-row">
+                                <span><strong>ব্যবহারকারী (Sender):</strong> <span class="sender-num"><i class="fa-solid fa-user"></i> ${item.sender}</span></span>
+                                <span><strong>প্রাপক:</strong> <span class="receiver-num"><i class="fa-solid fa-phone"></i> ${item.phone}</span></span>
+                            </div>
+                            <div class="history-msg-body">
+                                ${item.msg}
+                            </div>
+                        `;
+                        container.appendChild(card);
+                    });
+                }
+            } catch (error) {
+                console.error("Error fetching history: ", error);
+                container.innerHTML = `<p style="text-align:center; color:#f43f5e; padding: 20px;">হিস্ট্রি লোড করতে সমস্যা হয়েছে!</p>`;
+            }
+        }
+
+        function closeHistoryModal() {
+            document.getElementById('historyModalOverlay').classList.remove('active');
+        }
+
+        // ইভেন্ট লিসেনার বাইন্ডিং
+        document.getElementById('loginBtn').addEventListener('click', handleLogin);
+        document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+        document.getElementById('logoutBtn2').addEventListener('click', handleLogout);
+        document.getElementById('openHistoryBtn').addEventListener('click', openHistoryModal);
+        document.getElementById('openHistoryBtn2').addEventListener('click', openHistoryModal);
+        document.getElementById('backBtn').addEventListener('click', goBack);
+        document.getElementById('addStudentBtn').addEventListener('click', addStudent);
+        
+        document.getElementById('closeEditBtn').addEventListener('click', closeEditModal);
+        document.getElementById('saveEditBtn').addEventListener('click', saveEditedStudent);
+        
+        document.getElementById('closeSmsBtn').addEventListener('click', closeSmsModal);
+        document.getElementById('sendSmsBtn').addEventListener('click', confirmSendSMS);
+        
+        document.getElementById('closeHistoryBtn').addEventListener('click', closeHistoryModal);
+        
+        document.getElementById('closeDeleteBtn').addEventListener('click', closeDeleteModal);
+        document.getElementById('confirmDeleteBtn').addEventListener('click', confirmDeleteStudent);
+
+        // ক্লাস কার্ডগুলোর জন্য ইভেন্ট লিসেনার
+        document.querySelectorAll('.class-card').forEach(card => {
+            card.addEventListener('click', () => {
+                showStudents(card.getAttribute('data-class'));
+            });
+        });
+    </script>
+</body>
+</html>
