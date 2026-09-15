@@ -732,67 +732,67 @@
                 <div class="class-card" data-class="প্লে শ্রেণি">
                     <i class="fa-solid fa-child"></i>
                     <h3>প্লে শ্রেণি</h3>
-                    <p>শিক্ষার্থী তালিকা</p>
+                    <p class="student-count-text">লোড হচ্ছে...</p>
                 </div>
                 <div class="class-card" data-class="নার্সারি শ্রেণি">
                     <i class="fa-solid fa-child-reaching"></i>
                     <h3>নার্সারি শ্রেণি</h3>
-                    <p>শিক্ষার্থী তালিকা</p>
+                    <p class="student-count-text">লোড হচ্ছে...</p>
                 </div>
                 <div class="class-card" data-class="কেজি শ্রেণি">
                     <i class="fa-solid fa-shapes"></i>
                     <h3>কেজি শ্রেণি</h3>
-                    <p>শিক্ষার্থী তালিকা</p>
+                    <p class="student-count-text">লোড হচ্ছে...</p>
                 </div>
                 <div class="class-card" data-class="প্রথম শ্রেণি">
                     <i class="fa-solid fa-book-open"></i>
                     <h3>প্রথম শ্রেণি</h3>
-                    <p>শিক্ষার্থী তালিকা</p>
+                    <p class="student-count-text">লোড হচ্ছে...</p>
                 </div>
                 <div class="class-card" data-class="দ্বিতীয় শ্রেণি">
                     <i class="fa-solid fa-book-open"></i>
                     <h3>দ্বিতীয় শ্রেণি</h3>
-                    <p>শিক্ষার্থী তালিকা</p>
+                    <p class="student-count-text">লোড হচ্ছে...</p>
                 </div>
                 <div class="class-card" data-class="তৃতীয় শ্রেণি">
                     <i class="fa-solid fa-book-open"></i>
                     <h3>তৃতীয় শ্রেণি</h3>
-                    <p>শিক্ষার্থী তালিকা</p>
+                    <p class="student-count-text">লোড হচ্ছে...</p>
                 </div>
                 <div class="class-card" data-class="চতুর্থ শ্রেণি">
                     <i class="fa-solid fa-book-open"></i>
                     <h3>চতুর্থ শ্রেণি</h3>
-                    <p>শিক্ষার্থী তালিকা</p>
+                    <p class="student-count-text">লোড হচ্ছে...</p>
                 </div>
                 <div class="class-card" data-class="পঞ্চম শ্রেণি">
                     <i class="fa-solid fa-book-open"></i>
                     <h3>পঞ্চম শ্রেণি</h3>
-                    <p>শিক্ষার্থী তালিকা</p>
+                    <p class="student-count-text">লোড হচ্ছে...</p>
                 </div>
                 <div class="class-card" data-class="ষষ্ঠ শ্রেণি">
                     <i class="fa-solid fa-book-open"></i>
                     <h3>ষষ্ঠ শ্রেণি</h3>
-                    <p>শিক্ষার্থী তালিকা</p>
+                    <p class="student-count-text">লোড হচ্ছে...</p>
                 </div>
                 <div class="class-card" data-class="সপ্তম শ্রেণি">
                     <i class="fa-solid fa-book-open"></i>
                     <h3>সপ্তম শ্রেণি</h3>
-                    <p>শিক্ষার্থী তালিকা</p>
+                    <p class="student-count-text">লোড হচ্ছে...</p>
                 </div>
                 <div class="class-card" data-class="অষ্টম শ্রেণি">
                     <i class="fa-solid fa-book-open"></i>
                     <h3>অষ্টম শ্রেণি</h3>
-                    <p>শিক্ষার্থী তালিকা</p>
+                    <p class="student-count-text">লোড হচ্ছে...</p>
                 </div>
                 <div class="class-card" data-class="নবম শ্রেণি">
                     <i class="fa-solid fa-book-open"></i>
                     <h3>নবম শ্রেণি</h3>
-                    <p>শিক্ষার্থী তালিকা</p>
+                    <p class="student-count-text">লোড হচ্ছে...</p>
                 </div>
                 <div class="class-card" data-class="দশম শ্রেণি">
                     <i class="fa-solid fa-book-open"></i>
                     <h3>দশম শ্রেণি</h3>
-                    <p>শিক্ষার্থী তালিকা</p>
+                    <p class="student-count-text">লোড হচ্ছে...</p>
                 </div>
             </div>
         </section>
@@ -880,6 +880,7 @@
         <div class="custom-modal">
             <h3><i class="fa-brands fa-whatsapp"></i> হোয়াটসঅ্যাপ মেসেজ প্রিভিউ</h3>
             <input type="hidden" id="smsStudentName">
+            <input type="hidden" id="smsClassName">
             <div class="modal-form-group">
                 <label>লগইন করা ইউজারনেম</label>
                 <input type="text" id="senderUser" readonly style="background-color: #111827; color: #38bdf8; cursor: not-allowed;">
@@ -970,7 +971,24 @@
             if (loggedInUsername) {
                 switchSection('class-section', 'login-section');
             }
+            fetchAllClassCounts();
         });
+
+        async function fetchAllClassCounts() {
+            const classCards = document.querySelectorAll('.class-card');
+            classCards.forEach(async (card) => {
+                const className = card.getAttribute('data-class');
+                const countTextElem = card.querySelector('.student-count-text');
+                try {
+                    const querySnapshot = await getDocs(collection(db, className));
+                    const count = querySnapshot.size;
+                    countTextElem.innerText = `মোট শিক্ষার্থী: ${count} জন`;
+                } catch (error) {
+                    console.error(`Error fetching count for ${className}:`, error);
+                    countTextElem.innerText = `মোট শিক্ষার্থী: ০ জন`;
+                }
+            });
+        }
 
         function switchSection(showId, hideId) {
             let hideElem = document.getElementById(hideId);
@@ -1012,6 +1030,7 @@
                 switchSection('class-section', 'login-section');
                 document.getElementById('logPass').value = '';
                 showToast("সফলভাবে লগইন করা হয়েছে!");
+                fetchAllClassCounts();
             } else {
                 errorMsg.style.display = 'block';
             }
@@ -1129,6 +1148,7 @@
 
                 showToast("শিক্ষার্থী সফলভাবে যুক্ত করা হয়েছে!");
                 await fetchStudentsFromFirestore();
+                fetchAllClassCounts();
             } catch (error) {
                 console.error("Error adding: ", error);
                 alert("সংরক্ষণ করতে সমস্যা হয়েছে!");
@@ -1199,6 +1219,7 @@
                 closeDeleteModal();
                 showToast("শিক্ষার্থী সফলভাবে মুছে ফেলা হয়েছে!");
                 await fetchStudentsFromFirestore();
+                fetchAllClassCounts();
             } catch (error) {
                 console.error("Error deleting: ", error);
                 alert("মুছে ফেলতে সমস্যা হয়েছে!");
@@ -1207,12 +1228,14 @@
 
         function goBack() {
             switchSection('class-section', 'student-section');
+            fetchAllClassCounts();
         }
 
         function openSMSModal(studentName, phoneNum) {
             let message = `প্রিয় অভিভাবক, আজ বিদ্যালয় চলাকালীন আপনার সন্তান ${studentName} ক্লাসে উপস্থিত ছিল না। বিষয়টি সদয় অবগতির জন্য জানানো হলো। (অরবিট ইন্টারন্যাশনাল স্কুল)`;
 
             document.getElementById('smsStudentName').value = studentName;
+            document.getElementById('smsClassName').value = currentActiveClass;
             document.getElementById('senderUser').value = loggedInUsername; 
             document.getElementById('smsPhone').value = phoneNum;
             document.getElementById('smsText').value = message;
@@ -1226,6 +1249,7 @@
 
         async function confirmSendSMS() {
             let studentName = document.getElementById('smsStudentName').value.trim();
+            let className = document.getElementById('smsClassName').value.trim();
             let senderUser = document.getElementById('senderUser').value.trim();
             let userPhone = document.getElementById('smsPhone').value.trim();
             let message = document.getElementById('smsText').value.trim();
@@ -1241,6 +1265,7 @@
             let historyEntry = {
                 time: timeString,
                 student: studentName,
+                className: className,
                 sender: senderUser,
                 phone: userPhone,
                 msg: message,
@@ -1287,11 +1312,12 @@
                     container.innerHTML = `<p style="text-align:center; color:#94a3b8; padding: 20px;">এখনো কোনো এসএমএস পাঠানোর ইতিহাস নেই।</p>`;
                 } else {
                     smsHistory.forEach(item => {
+                        let displayName = item.className ? `${item.student} (${item.className})` : item.student;
                         let card = document.createElement('div');
                         card.className = 'history-card';
                         card.innerHTML = `
                             <div class="history-card-header">
-                                <span class="history-student-name"><i class="fa-solid fa-user-graduate"></i> ${item.student}</span>
+                                <span class="history-student-name"><i class="fa-solid fa-user-graduate"></i> ${displayName}</span>
                                 <span class="history-time"><i class="fa-regular fa-clock"></i> ${item.time}</span>
                             </div>
                             <div class="history-numbers-row">
@@ -1343,4 +1369,4 @@
         });
     </script>
 </body>
-</html>
+    </html>
