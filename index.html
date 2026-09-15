@@ -3,7 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>অরবিট ইন্টারন্যাশনাল স্কুল - ম্যানেজমেন্ট সিস্টেম</title>
+    <title>Orbit Login - অরবিট ইন্টারন্যাশনাল স্কুল</title>
+    
+    <!-- Web App Manifest এবং আইকন ট্যাগ -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="apple-touch-icon" href="orbit.school.jpg">
+    <link rel="icon" type="image/jpeg" href="orbit.school.jpg">
+
     <!-- ফন্ট অসম আইকন -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -1324,7 +1331,7 @@
                                 <span><strong>ব্যবহারকারী (Sender):</strong> <span class="sender-num"><i class="fa-solid fa-user"></i> ${item.sender}</span></span>
                                 <span><strong>প্রাপক:</strong> <span class="receiver-num"><i class="fa-solid fa-phone"></i> ${item.phone}</span></span>
                             </div>
-                            <div class="history-msg-body">
+                            <div class="history-msg-body" style="white-space: pre-line;">
                                 ${item.msg}
                             </div>
                         `;
@@ -1341,7 +1348,6 @@
             document.getElementById('historyModalOverlay').classList.remove('active');
         }
 
-        // ইভেন্ট লিসেনার বাইন্ডিং
         document.getElementById('loginBtn').addEventListener('click', handleLogin);
         document.getElementById('logoutBtn').addEventListener('click', handleLogout);
         document.getElementById('logoutBtn2').addEventListener('click', handleLogout);
@@ -1361,7 +1367,6 @@
         document.getElementById('closeDeleteBtn').addEventListener('click', closeDeleteModal);
         document.getElementById('confirmDeleteBtn').addEventListener('click', confirmDeleteStudent);
 
-        // ক্লাস কার্ডগুলোর জন্য ইভেন্ট লিসেনার
         document.querySelectorAll('.class-card').forEach(card => {
             card.addEventListener('click', () => {
                 showStudents(card.getAttribute('data-class'));
