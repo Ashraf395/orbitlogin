@@ -1,0 +1,20 @@
+{
+  "name": "Orbit Login - অরবিট ইন্টারন্যাশনাল স্কুল",
+  "short_name": "Orbit Login",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "orbit.school.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "orbit.school.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
